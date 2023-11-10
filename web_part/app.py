@@ -13,7 +13,6 @@ Pony(app)
 
 @app.route("/")
 def index():
-    # return render_template('index.html', objects=models.get_all_object())
     return render_template('app.html')
 
 @app.route("/query/<sdate>/<stime>/<edate>/<etime>")
