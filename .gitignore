@@ -1,0 +1,4 @@
+raw/
+deepsort_part/data/
+deepsort_part/database.sqlite
+**/__pycache__/

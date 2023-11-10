@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/themes/classic.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/themes/classic.date.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/themes/classic.time.css') }}">
+
+    <title>What have passed by?</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light justify-content-between">
+        <div>
+            <a class="navbar-brand">FPGA加速的<b>对象跟踪监控系统</b><small class="ml-3">YOLOv2 on <span class="badge badge-success">PYNQ-Z2 PL</span> DeepSort, Flask on <span class="badge badge-primary">PYNQ-Z2 PS</span> </small></a>
+
+          </div>
+        <div class="form-inline">
+            <div class="mt-3 mb-3">
+                <span class="badge badge-secondary">FROM</span>
+                <input id="input-sdata" class="form-control mr-sm-2 pick-date" type="input" placeholder="开始日期" aria-label="Search">
+                <input id="input-stime" class="form-control mr-sm-2 pick-time" type="input" placeholder="开始时间" aria-label="Search">
+                <span class="badge badge-secondary">TO</span>
+                <input id="input-edata" class="form-control mr-sm-2 pick-date" type="input" placeholder="结束日期" aria-label="Search">
+                <input id="input-etime" class="form-control mr-sm-2 pick-time" type="input" placeholder="结束时间" aria-label="Search">
+            </div>
+            <button class="btn btn-outline-success my-2 my-sm-0 ml-2" type="button" id="go">筛选此时间段内的物体</button>
+            <a class="btn btn-outline-secondary my-2 my-sm-0 ml-2" href="/">显示全部物体</a>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        <div class="card-columns">
+          <!--
+            <div class="card">
+              <img class="card-img-top p-3" src="http://lh3.googleusercontent.com/gMS-DWfKG4hTjUpAnOpT51ReoTOgWxQGLcyW1754gOTt-JhIbmtlT6FVllAp6OTkqH-5Lcz1NsygD2FtbVYfXJeZ6w=s388" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">A PYNQ-Z2 Board</h5>
+                <p class="card-text">
+                    出现时间:2023-11-01 16:38<br>
+                    消失时间:2023-11-16 24:00
+                </p>
+                <p class="card-text"><small class="text-muted">Confidence:90%</small></p>
+              </div>
+            </div>
+            
+            <div class="card">
+                <img class="card-img-top p-3" src="http://lh3.googleusercontent.com/qCtyz6uJW_1ugxOu1XROYxs_1lDfNr0Kd0KYQVPdil2nmculEYhyFwdFXPNrzEWMtGUueAH3TT9zXDZXfIkw1HpZv-A=s174" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">A Linux</h5>
+                  <p class="card-text">
+                      出现时间:2023-11-01 16:38<br>
+                      消失时间:3023-11-16 24:00
+                  </p>
+                  <p class="card-text"><small class="text-muted">Confidence:90%</small></p>
+                </div>
+            </div>
+            -->
+            {% for obj in objects%}
+            <div class="card">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img class="p-3" src="/{{ obj.img_path }}" alt="No image yet" style="width: 100%;">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ obj.name }}</h5>
+                    <p class="card-text">
+                        出现时间: {{ obj.time_appear.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                        消失时间: {{ obj.time_exit.strftime('%Y-%m-%d %H:%M:%S') }}
+                    </p>
+                    <p class="card-text"><small class="text-muted">Confidence: {{ obj.confidence }}</small></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+         </div>
+        
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="{{ url_for('static', filename='3rd/picker.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/picker.date.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/picker.time.js') }}"></script>
+    <script>
+        $('.pick-date').pickadate();
+        $('.pick-time').pickatime();
+        $('#go').click(function(){
+          const val1 = encodeURIComponent($('#input-sdata').val());
+          const val2 = encodeURIComponent($('#input-stime').val());
+          const val3 = encodeURIComponent($('#input-edata').val());
+          const val4 = encodeURIComponent($('#input-etime').val());
+
+          if(val1=='' || val2=='' || val3=='' || val4==''){
+            alert("请输入日期时间");
+            return;
+          }
+  
+          const redirectURL = `/query/${val1}/${val2}/${val3}/${val4}`;
+          console.log(redirectURL);
+  
+          window.location.href = redirectURL;
+        }); 
+    </script>
+
+</body>
+</html>
