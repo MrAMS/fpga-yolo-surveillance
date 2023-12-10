@@ -15,12 +15,6 @@ Pony(app)
 def index():
     return render_template('app.html')
 
-@app.route("/query/<sdate>/<stime>/<edate>/<etime>")
-def query(sdate, stime, edate, etime):
-    s = convert_datetime(sdate, stime)
-    e = convert_datetime(edate, etime)
-    return render_template('index.html', objects=models.get_object_in_date_range(s, e))
-
 @app.route("/api/query", methods=['POST'])
 def api_query():
     print(request.json)
